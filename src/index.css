@@ -1,0 +1,86 @@
+/* Tailwind v4 entry */
+@import "tailwindcss";
+
+/* ---- Theme tokens (v4) ---- */
+@theme {
+  --color-bg: #0B0C10;
+  --color-card: #0F1115;
+  --color-edge: rgba(255,255,255,0.08);
+  --color-accent: #64D2FF;
+}
+
+/* ---- Globals ---- */
+:root { color-scheme: light dark; }
+html, body, #root { height: 100%; }
+
+body {
+  @apply bg-bg text-white antialiased;
+  margin: 0;
+}
+
+/* One helper only */
+.text-muted-foreground { color: rgba(255,255,255,.65); }
+
+/* Optional link tweak */
+a { text-decoration: none; }
+a:hover { opacity: .9; }
+
+/* ---- Component helpers ---- */
+@layer components {
+  .card {
+    @apply rounded-2xl border border-edge bg-card
+           shadow-[0_10px_30px_rgba(0,0,0,.2)]
+           [box-shadow:0_0_0_1px_rgba(255,255,255,.06)_inset];
+  }
+
+  .btn {
+    @apply rounded-xl border border-edge px-4 py-2
+           text-sm font-medium hover:opacity-90;
+  }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+
+@keyframes bg-shift {
+  0%   { transform: translate3d(-10%, -8%, 0) rotate(0deg);   }
+  50%  { transform: translate3d( 12%, 10%, 0) rotate(180deg); }
+  100% { transform: translate3d(-10%, -8%, 0) rotate(360deg); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe\:animate-none { animation: none !important; }
+}
+
+/* Big, visible fluctuation: diagonal sway + rotate + slight scale */
+@keyframes cloud-wobble {
+  0%   { transform: translate3d(-14%, -10%, 0) rotate(-18deg) scale(1.06); }
+  50%  { transform: translate3d( 14%,  10%, 0) rotate( 18deg) scale(1.10); }
+  100% { transform: translate3d(-14%, -10%, 0) rotate(-18deg) scale(1.06); }
+}
+
+/* quick container fade-in to hide first paint */
+@keyframes bg-fade-in {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+/* Soft pulse for gradient blobs: opacity + slight scale */
+@keyframes blob-pulse {
+  0%, 100% { opacity: .16; transform: scale(1); }
+  50%      { opacity: .38; transform: scale(1.12); }
+}
+
+/* Slightly different curve for variety */
+@keyframes blob-pulse-2 {
+  0%, 100% { opacity: .12; transform: scale(1); }
+  50%      { opacity: .32; transform: scale(1.08); }
+}
+
+/* Honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe\:animate-none { animation: none !important; }
+}
