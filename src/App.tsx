@@ -273,7 +273,7 @@ function FancyTitle({ text }: { text: string }) {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.6 }}
-      className="text-6xl sm:text-7xl font-extrabold leading-[1.05] tracking-tight text-white"
+      className="font-sans text-6xl sm:text-7xl font-extrabold leading-[1.05] tracking-tight text-white"
     >
       {words.map((w, i) => (
         <motion.span key={i} variants={item} className="inline-block mr-2">
@@ -306,7 +306,6 @@ function ParallaxHero() {
                 phrases={[
                   "Systems Administrator & SecOps Analyst",
                   "Graduate of Kean University",
-                  "Frontend tinkerer — React + AWS",
                 ]}
                 className="text-lg text-white/70"
                 typingSpeed={55}
@@ -516,7 +515,7 @@ function About() {
                   TypeScript/JavaScript, Java, SQL
                 </li>
                 <li>
-                  <span className="text-white/50">Web:</span> React, Vite, Tailwind
+                  <span className="text-white/50">Web:</span> React, Vite, Tailwind, Vercel
                 </li>
                 <li>
                   <span className="text-white/50">Infra & Cloud:</span> AWS, VMware, Hyper-V
@@ -551,7 +550,7 @@ function About() {
 function Projects() {
   const items = [
     {
-      title: "Wi-Flight – Secure Mobile Networking",
+      title: "Wi-Flight – Mobile Networking",
       desc: "Modular firewall stack (pfSense/FortiGate), Pi-hole DNS, Grafana dashboards, and AI chatbot support.",
       tags: ["pfSense", "Fortinet", "Grafana", "React", "AI"],
       images: ["/wiflight1.1.png", "/wiflight2.1.png"],
@@ -559,7 +558,7 @@ function Projects() {
     {
       title: "Personal Website",
       desc: "Vite + React + TypeScript + Tailwind deployed with Vercel.",
-      tags: ["Vite", "TypeScript", "Tailwind"],
+      tags: ["Vite", "TypeScript", "Tailwind", "Vercel"],
       images: ["/rvt.png"],
     },
     {
@@ -660,113 +659,109 @@ function ProjectCard({
   };
 
   return (
-    <motion.div variants={fadeInUp} className="group block h-full"> 
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={open}
-        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && open()}
-      >
-        <TiltCard>
-          {/* Media area (VIDEO or IMAGES) */}
-          {proj.video ? (
-            // --- VIDEO ---
+  <motion.div variants={fadeInUp} className="group block h-full">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={open}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && open()}
+    >
+      <TiltCard>
+        {/* Media area (VIDEO or IMAGES) */}
+        {proj.video ? (
+          // --- VIDEO ---
+          <motion.div
+            className="mb-3 overflow-hidden rounded-xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative w-full aspect-[16/10]">
+              <video
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 bg-black"
+                poster={proj.video.poster}
+                muted
+                playsInline
+                preload="metadata"
+                onMouseEnter={(e) => {
+                  const v = e.currentTarget;
+                  v.currentTime = 0;
+                  v.play().catch(() => {});
+                }}
+                onMouseLeave={(e) => e.currentTarget.pause()}
+              >
+                {proj.video.sources.map((s, k) => (
+                  <source key={k} src={s.src} type={s.type} />
+                ))}
+                Your browser does not support the video tag.
+              </video>
+
+              <span className="absolute left-2 top-2 rounded-md bg-black/60 px-2 py-0.5 text-[10px] uppercase tracking-wide">
+                video
+              </span>
+            </div>
+          </motion.div>
+        ) : (
+          // --- IMAGES ---
+          proj.images && proj.images.length > 0 && (
             <motion.div
               className="mb-3 overflow-hidden rounded-xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
             >
-              {/* Consistent card size */}
               <div className="relative w-full aspect-[16/10]">
-                <video
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 bg-black"
-                  poster={proj.video.poster}
-                  muted
-                  playsInline
-                  preload="metadata" /* show poster until play */
-                  onMouseEnter={(e) => {
-                    const v = e.currentTarget;
-                    v.currentTime = 0;
-                    v.play().catch(() => {});
-                  }}
-                  onMouseLeave={(e) => e.currentTarget.pause()}
-                >
-                  {proj.video.sources.map((s, k) => (
-                    <source key={k} src={s.src} type={s.type} />
-                  ))}
-                  Your browser does not support the video tag.
-                </video>
-
-                {/* small badge */}
-                <span className="absolute left-2 top-2 rounded-md bg-black/60 px-2 py-0.5 text-[10px] uppercase tracking-wide">
-                  video
-                </span>
+                <motion.img
+                  key={idx}
+                  src={images[idx]}
+                  alt={proj.title}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  initial={{ opacity: 0.0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.35 }}
+                />
+                {hasCarousel && (
+                  <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1">
+                    {images.map((_, d) => (
+                      <span
+                        key={d}
+                        className={`h-1.5 w-1.5 rounded-full ${d === idx ? "bg-white" : "bg-white/40"}`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
-          ) : (
-            // --- IMAGES ---
-            images.length > 0 && (
-              <motion.div
-                className="mb-3 overflow-hidden rounded-xl"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                onMouseEnter={() => setPaused(true)}
-                onMouseLeave={() => setPaused(false)}
-              >
-                <div className="relative w-full aspect-[16/10]">
-                  <motion.img
-                    key={idx}
-                    src={images[idx]}
-                    alt={proj.title}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                    initial={{ opacity: 0.0, scale: 1.02 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.35 }}
-                  />
-                  {hasCarousel && (
-                    <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1">
-                      {images.map((_, d) => (
-                        <span
-                          key={d}
-                          className={`h-1.5 w-1.5 rounded-full ${d === idx ? "bg-white" : "bg-white/40"}`}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )
-          )}
+          )
+        )}
 
-          {/* Text area */}
+        {/* ---------- Text area (balanced + uniform height) ---------- */}
+        <div className="flex flex-col grow">
           <div className="flex items-start justify-between gap-4">
-            <h3 className="text-lg font-semibold">{proj.title}</h3>
-            <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            <h3 className="text-lg font-semibold clamp-1">{proj.title}</h3>
+            <span aria-hidden className="shrink-0 transition-transform group-hover:translate-x-1">→</span>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">{proj.desc}</p>
+
+          <div className="mt-2 min-h-[3.75rem]">
+            <p className="text-sm text-muted-foreground clamp-2">{proj.desc}</p>
+          </div>
+
           <div className="mt-3 flex flex-wrap gap-2">
             {proj.tags.map((t) => (
               <Badge key={t}>{t}</Badge>
             ))}
           </div>
-        </TiltCard>
-      </div>
-
-      {/* Optional external link under card */}
-      {proj.link && (
-        <div className="mt-2">
-          <a href={proj.link} className="text-sm underline opacity-80 hover:opacity-100" target="_blank" rel="noreferrer">
-            Open project →
-          </a>
         </div>
-      )}
-    </motion.div>
-  );
+        {/* ---------- /Text area ---------- */}
+      </TiltCard>
+    </div>
+  </motion.div>
+);
 }
 
 /* -------------------------- Footer ------------------------ */
