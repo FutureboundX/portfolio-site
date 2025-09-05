@@ -627,7 +627,6 @@ function ProjectCard({
     title: string;
     desc: string;
     tags: readonly string[];                         // readonly
-    link?: string;
     images?: ReadonlyArray<string>;                  // readonly
     video?: {
       sources: ReadonlyArray<{ src: string; type: string }>; // readonly
