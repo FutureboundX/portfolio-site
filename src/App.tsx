@@ -768,7 +768,7 @@ function Footer() {
   return (
     <footer className="border-t border-edge py-10">
       <div className="mx-auto max-w-7xl px-6 text-sm text-muted-foreground text-center">
-        © {new Date().getFullYear()} Stephen Colandro — Built with Vite + React + TS
+        {new Date().getFullYear()} Stephen Colandro — Built with Vite + React + TS
       </div>
     </footer>
   );
