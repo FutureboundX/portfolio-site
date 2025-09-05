@@ -304,7 +304,7 @@ function ParallaxHero() {
             <div className="h-[1.75rem]">
               <Typewriter
                 phrases={[
-                  "Systems Administrator & SecOps Analyst",
+                  "Systems Administrator & SecOps Analyst Experience",
                   "Graduate of Kean University",
                 ]}
                 className="text-lg text-white/70"
